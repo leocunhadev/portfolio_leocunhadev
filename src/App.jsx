@@ -60,9 +60,10 @@ const App = () => {
                 <section className="mb-20">
                     <div className="flex flex-col-reverse sm:flex-row justify-between items-start gap-8">
                         <div className="flex-1">
-                            <h1 className="text-5xl font-bold tracking-tight mb-4 text-black dark:text-white">Léo Cunha</h1>
+                            <h1 className="text-5xl font-bold tracking-tight mb-4 text-foreground dark:text-background">Léo Cunha</h1>
                             <p className="text-lg text-gray-600 dark:text-gray-400 mb-8">
-                                Chefe de Relações com o Desenvolvedor na <span className="font-semibold text-black dark:text-white">Vercel</span>
+                                Lider de desenvolvimento na agência <span className="font-semibold text-foreground dark:text-background">Dolivs</span>
+                                CTO na agência de lançamento <span className="font-semibold text-foreground dark:text-background">Kame Vercel</span>
                             </p>
                             <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-xl">
                                 Ajudando os desenvolvedores a construir uma web mais rápida. Ensinar sobre desenvolvimento web, sem servidor e React / Next.js.
@@ -80,7 +81,7 @@ const App = () => {
 
                 {/* Featured Posts */}
                 <section className="mb-20">
-                    <h2 className="text-3xl font-bold mb-10 text-black dark:text-white">Postagens em destaque</h2>
+                    <h2 className="text-3xl font-bold mb-10 text-foreground dark:text-background">Postagens em destaque</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                         {featuredPosts.map((post, index) => (
                             <a
@@ -88,8 +89,8 @@ const App = () => {
                                 href="#"
                                 className={`group relative p-1 rounded-2xl transition-transform hover:scale-[1.02] active:scale-[0.98] bg-gradient-to-br ${post.gradient}`}
                             >
-                                <div className="bg-white dark:bg-[#111111] p-6 rounded-[14px] h-64 flex flex-col justify-between items-start">
-                                    <h3 className="text-lg font-bold leading-snug mb-6 group-hover:underline text-black dark:text-white">{post.title}</h3>
+                                <div className="bg-background dark:bg-foreground p-6 rounded-[14px] h-64 flex flex-col justify-between items-start border border-gray-200 dark:border-gray-800">
+                                    <h3 className="text-lg font-bold leading-snug mb-6 group-hover:underline text-foreground dark:text-background">{post.title}</h3>
                                     <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mt-auto uppercase tracking-wide font-semibold">
                                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -108,7 +109,7 @@ const App = () => {
 
                 {/* Learning Section */}
                 <section className="mb-20">
-                    <h2 className="text-3xl font-bold mb-6 text-black dark:text-white">Aprenda React e Next.js</h2>
+                    <h2 className="text-3xl font-bold mb-6 text-foreground dark:text-background">Aprenda React e Next.js</h2>
                     <p className="text-lg text-gray-600 dark:text-gray-400 mb-10 max-w-2xl leading-relaxed">
                         Crie e implante um aplicativo SaaS moderno usando o software de código aberto mais popular. Este curso tem 12 horas de duração e é totalmente transmitido ao vivo.
                     </p>
@@ -135,8 +136,8 @@ const App = () => {
 
                 {/* Newsletter Section */}
                 <section className="mb-20">
-                    <div className="bg-[#f0f9ff] dark:bg-[#1a202c] border border-blue-100 dark:border-blue-900/30 rounded-2xl p-10">
-                        <h3 className="text-2xl font-bold mb-3 text-black dark:text-white">Assine o boletim informativo</h3>
+                    <div className="bg-blue-50/50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30 rounded-2xl p-10">
+                        <h3 className="text-2xl font-bold mb-3 text-foreground dark:text-background">Assine o boletim informativo</h3>
                         <p className="text-base text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
                             Receba e-mails meus sobre desenvolvimento da web, tecnologia e acesso antecipado a novos artigos.
                         </p>
