@@ -88,9 +88,9 @@ const App = () => {
 
                 <main>
                     <Hero />
-                    <FeaturedPosts featuredPosts={featuredPosts} />
-                    <Learning courseVideos={courseVideos} />
-                    <Newsletter />
+                    {/* <FeaturedPosts featuredPosts={featuredPosts} /> */}
+                    {/* <Learning courseVideos={courseVideos} /> */}
+                    {/* <Newsletter /> */}
                 </main>
 
                 <Footer />
