@@ -1,7 +1,20 @@
 import React from 'react';
 import { Moon, Sun, Menu, X } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 
-const Navbar = ({ isMenuOpen, toggleMenu, navLinks, toggleDarkMode, darkMode }) => {
+const Navbar = ({ isMenuOpen, toggleMenu, toggleDarkMode, darkMode }) => {
+    const location = useLocation();
+
+    const navLinks = [
+        { name: 'Home', path: '/' },
+        { name: 'Livro de visitas', path: '/guestbook' },
+        { name: 'Painel', path: '/dashboard' },
+        { name: 'Blog', path: '/blog' },
+        { name: 'Trechos', path: '/snippets' }
+    ];
+
+    const isActive = (path) => location.pathname === path;
+
     return (
         <nav className="flex items-center justify-between mb-20 relative">
             <div className="flex items-center gap-4">
@@ -14,11 +27,18 @@ const Navbar = ({ isMenuOpen, toggleMenu, navLinks, toggleDarkMode, darkMode }) 
                 </button>
 
                 {/* Desktop Links */}
-                <div className="hidden md:flex gap-8">
+                <div className="hidden md:flex gap-4">
                     {navLinks.map((link) => (
-                        <a key={link} href="#" className="text-base font-medium text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 transition-colors">
-                            {link}
-                        </a>
+                        <Link
+                            key={link.name}
+                            to={link.path}
+                            className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${isActive(link.path)
+                                ? 'text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-gray-800'
+                                : 'text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800'
+                                }`}
+                        >
+                            {link.name}
+                        </Link>
                     ))}
                 </div>
             </div>
@@ -35,14 +55,17 @@ const Navbar = ({ isMenuOpen, toggleMenu, navLinks, toggleDarkMode, darkMode }) 
                 <div className="absolute top-14 left-0 w-full bg-background dark:bg-foreground border border-gray-200 dark:border-gray-800 rounded-2xl p-4 shadow-xl md:hidden z-40 animate-in fade-in slide-in-from-top-4 duration-200">
                     <div className="flex flex-col gap-2">
                         {navLinks.map((link) => (
-                            <a
-                                key={link}
-                                href="#"
+                            <Link
+                                key={link.name}
+                                to={link.path}
                                 onClick={() => toggleMenu()}
-                                className="px-4 py-3 text-lg font-semibold text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-all"
+                                className={`px-4 py-3 text-lg font-semibold rounded-xl transition-all ${isActive(link.path)
+                                    ? 'text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-gray-800'
+                                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800'
+                                    }`}
                             >
-                                {link}
-                            </a>
+                                {link.name}
+                            </Link>
                         ))}
                     </div>
                 </div>
