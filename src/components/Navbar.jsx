@@ -38,7 +38,7 @@ const Navbar = ({ isMenuOpen, toggleMenu, navLinks, toggleDarkMode, darkMode }) 
                             <a
                                 key={link}
                                 href="#"
-                                onClick={() => toggleMenu()} // Assuming toggleMenu closes the menu
+                                onClick={() => toggleMenu()}
                                 className="px-4 py-3 text-lg font-semibold text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-all"
                             >
                                 {link}

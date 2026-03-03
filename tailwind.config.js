@@ -17,7 +17,7 @@ export default {
         yellow: '#F1FA8C',
         blue: '#BD93F9',
         orange: '#FFB86C',
-        cyan: '#8BE9FD',
+        cyan: '#8BE9FD'
       },
     },
   },

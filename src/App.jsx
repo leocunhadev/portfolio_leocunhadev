@@ -10,7 +10,6 @@ const App = () => {
     const [darkMode, setDarkMode] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    // Carregar preferência do cookie ao iniciar
     useEffect(() => {
         const themeCookie = document.cookie
             .split('; ')
