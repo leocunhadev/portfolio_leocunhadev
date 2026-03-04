@@ -9,6 +9,7 @@ import Guestbook from './pages/Guestbook';
 import Dashboard from './pages/Dashboard';
 import Blog from './pages/Blog';
 import Snippets from './pages/Snippets';
+import BlogPost from './pages/BlogPost';
 
 const App = () => {
     const [darkMode, setDarkMode] = useState(false);
@@ -66,7 +67,7 @@ const App = () => {
                         <Route path="/" element={<Home />} />
                         <Route path="/guestbook" element={<Guestbook />} />
                         <Route path="/dashboard" element={<Dashboard />} />
-                        <Route path="/blog" element={<Blog />} />
+                        <Route path="/blog/:slug" element={<BlogPost />} />
                         <Route path="/snippets" element={<Snippets />} />
                     </Routes>
 
