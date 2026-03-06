@@ -1,27 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Hero from '../components/Hero';
 import FeaturedPosts from '../components/FeaturedPosts';
 import Learning from '../components/Learning';
 import Newsletter from '../components/Newsletter';
+import { fetchWithCache } from '../utils/githubApi';
 
 const Home = () => {
-    const featuredPosts = [
-        {
-            title: 'Tudo que eu sei sobre guias de estilo, sistemas de design e bibliotecas de componentes',
-            views: '92.643',
-            gradient: 'from-[#D8B4FE] to-[#818CF8]'
-        },
-        {
-            title: 'Passado, presente e futuro do gerenciamento do estado de reação',
-            views: '22.550',
-            gradient: 'from-[#FDE68A] to-[#FCA5A5]'
-        },
-        {
-            title: 'Qual back-end devo usar como desenvolvedor de front-end?',
-            views: '11.075',
-            gradient: 'from-[#6EE7B7] to-[#3B82F6]'
-        }
+    const [featuredPosts, setFeaturedPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const gradients = [
+        'from-[#D8B4FE] to-[#818CF8]',
+        'from-[#FDE68A] to-[#FCA5A5]',
+        'from-[#6EE7B7] to-[#3B82F6]'
     ];
+
+    useEffect(() => {
+        const fetchPosts = async () => {
+            try {
+                const data = await fetchWithCache('https://api.github.com/repos/leocunhadev/portfolio_leocunhadev/issues?labels=published');
+
+                const recentPosts = data.slice(0, 3).map((issue, index) => ({
+                    id: String(issue.number),
+                    title: issue.title,
+                    views: 'N/A', // GitHub issues não fornecem views diretamente
+                    gradient: gradients[index % gradients.length]
+                }));
+
+                setFeaturedPosts(recentPosts);
+            } catch (error) {
+                console.error('Erro ao buscar posts:', error);
+
+                // Fallback em caso de falha
+                setFeaturedPosts([
+                    {
+                        id: 'fallback',
+                        title: 'Erro ao carregar os posts',
+                        views: 'N/A',
+                        gradient: gradients[0]
+                    }
+                ]);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPosts();
+    }, []);
 
     const courseVideos = [
         { id: '01', title: 'Introdução ao React 2025', duration: '1:02:45' },
@@ -33,8 +58,14 @@ const Home = () => {
     return (
         <main>
             <Hero />
-            <FeaturedPosts featuredPosts={featuredPosts} />
-            <Learning courseVideos={courseVideos} />
+            {loading ? (
+                <div className="py-20 text-center animate-pulse">
+                    <p className="text-gray-500 dark:text-gray-400">Carregando postagens em destaque...</p>
+                </div>
+            ) : (
+                <FeaturedPosts featuredPosts={featuredPosts} />
+            )}
+            {/* <Learning courseVideos={courseVideos} /> */}
             <Newsletter />
         </main>
     );

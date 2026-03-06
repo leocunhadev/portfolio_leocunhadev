@@ -10,7 +10,7 @@ const FeaturedPosts = ({ featuredPosts }) => {
                 {featuredPosts.map((post, index) => (
                     <Link
                         key={index}
-                        to={`/blog/${post.title.toLowerCase().replace(/ /g, '-')}`}
+                        to={post.id === 'fallback' ? '#' : `/blog/${post.id}`}
                         className={`group relative p-1 rounded-2xl transition-transform hover:scale-[1.02] active:scale-[0.98] bg-gradient-to-br ${post.gradient}`}
                     >
                         <div className="bg-background dark:bg-foreground p-6 rounded-[14px] h-full flex flex-col justify-between items-start border border-gray-200 dark:border-gray-800">

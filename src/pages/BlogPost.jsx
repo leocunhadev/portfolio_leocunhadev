@@ -1,62 +1,58 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Calendar, Clock, Eye, ArrowLeft, Share2, Twitter, Linkedin, Copy } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import { fetchWithCache } from '../utils/githubApi';
 
 const BlogPost = () => {
+    // Agora o "slug" na verdade é o número da Issue no GitHub
     const { slug } = useParams();
+    const [post, setPost] = useState(null);
+    const [loading, setLoading] = useState(true);
 
-    // Mock data for a blog post
-    const post = {
-        title: 'Tudo que eu sei sobre guias de estilo, sistemas de design e bibliotecas de componentes',
-        publishedAt: '22 de Janeiro de 2024',
-        readingTime: '12 min de leitura',
-        views: '92.643 visualizações',
-        author: {
-            name: 'Leo Cunha',
-            avatar: 'https://github.com/leocunhadev.png',
-            role: 'Software Engineer'
-        },
-        content: `
-            <p class="mb-6 leading-relaxed text-gray-700 dark:text-gray-300">
-                Nos últimos anos, trabalhei em inúmeros projetos que exigiam a criação e manutenção de sistemas de design robustos.
-                Neste artigo, quero compartilhar tudo o que aprendi sobre como construir bibliotecas de componentes que escalam.
-            </p>
+    useEffect(() => {
+        const fetchPost = async () => {
+            try {
+                const issue = await fetchWithCache(`https://api.github.com/repos/leocunhadev/portfolio_leocunhadev/issues/${slug}`);
 
-            <h2 class="text-2xl font-bold mb-4 mt-8 dark:text-white">O que é um Sistema de Design?</h2>
-            <p class="mb-6 leading-relaxed text-gray-700 dark:text-gray-300">
-                Um sistema de design não é apenas uma biblioteca de componentes UI. É a linguagem visual completa de um produto,
-                incluindo diretrizes de UX, tom de voz, e princípios que guiam a criação de novas funcionalidades.
-            </p>
+                setPost({
+                    title: issue.title,
+                    publishedAt: new Date(issue.created_at).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' }),
+                    readingTime: Math.ceil((issue.body?.length || 0) / 1000) + ' min de leitura',
+                    views: 'N/A', // GitHub issues API não retorna views nativamente
+                    author: {
+                        name: issue.user.login,
+                        avatar: issue.user.avatar_url,
+                        role: 'Autor'
+                    },
+                    content: issue.body,
+                    html_url: issue.html_url
+                });
+            } catch (error) {
+                console.error('Erro ao buscar post:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-            <div class="bg-gray-100 dark:bg-gray-800 p-6 rounded-xl mb-6 border-l-4 border-blue-500">
-                <p class="italic text-gray-800 dark:text-gray-200">
-                    "Sistemas de design são sobre comunicação. Se os desenvolvedores e designers não estiverem falando a mesma língua, o sistema falhou."
-                </p>
+        fetchPost();
+    }, [slug]);
+
+    if (loading) {
+        return (
+            <div className="py-20 text-center animate-pulse">
+                <p className="text-gray-500 dark:text-gray-400">Carregando o artigo diretamente do GitHub...</p>
             </div>
+        );
+    }
 
-            <h3 class="text-xl font-bold mb-3 mt-6 dark:text-white">1. Fundamentos (Atoms)</h3>
-            <p class="mb-4 leading-relaxed text-gray-700 dark:text-gray-300">
-                Começamos com o básico: cores, tipografia, espaçamento e ícones. Estes são os blocos de construção de tudo o mais.
-            </p>
-
-            <pre class="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto mb-6 text-sm">
-<code>// Exemplo de tokens de design
-const tokens = {
-  colors: {
-    primary: '#3B82F6',
-    secondary: '#10B981',
-    background: '#FFFFFF'
-  },
-  spacing: [0, 4, 8, 16, 24, 32, 64]
-}</code></pre>
-
-            <h3 class="text-xl font-bold mb-3 mt-6 dark:text-white">2. Componentes e Composição</h3>
-            <p class="mb-6 leading-relaxed text-gray-700 dark:text-gray-300">
-                A verdadeira magia acontece quando você combina esses fundamentos em componentes reutilizáveis e acessíveis.
-                A acessibilidade (A11y) nunca deve ser uma reflexão tardia.
-            </p>
-        `
-    };
+    if (!post) {
+        return (
+            <div className="py-20 text-center text-red-500">
+                <p>Post não encontrado ou erro ao carregar.</p>
+            </div>
+        );
+    }
 
     return (
         <article className="py-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -97,19 +93,16 @@ const tokens = {
                             <Clock size={14} />
                             {post.readingTime}
                         </span>
-                        <span className="flex items-center gap-1.5">
-                            <Eye size={14} />
-                            {post.views}
-                        </span>
                     </div>
                 </div>
             </header>
 
             {/* Main Content */}
-            <div
-                className="prose prose-lg dark:prose-invert max-w-none mb-16"
-                dangerouslySetInnerHTML={{ __html: post.content }}
-            />
+            <div className="prose prose-lg dark:prose-invert prose-indigo max-w-none mb-16 break-words">
+                <ReactMarkdown>
+                    {post.content}
+                </ReactMarkdown>
+            </div>
 
             {/* Share & Footer Actions */}
             <footer className="pt-10 border-t border-gray-200 dark:border-gray-800">
@@ -127,12 +120,12 @@ const tokens = {
                     </div>
 
                     <a
-                        href="https://twitter.com/leocunha"
+                        href={post.html_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm font-medium text-blue-500 hover:underline"
+                        className="text-sm font-medium text-blue-500 hover:underline inline-flex items-center gap-1"
                     >
-                        Editar artigo no GitHub
+                        Ver issue no GitHub <Share2 size={14} />
                     </a>
                 </div>
             </footer>
