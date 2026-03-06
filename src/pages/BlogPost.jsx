@@ -102,7 +102,7 @@ const BlogPost = () => {
             </header>
 
             {/* Main Content */}
-            <div className="prose prose-lg dark:prose-invert prose-indigo max-w-none mb-16 break-words">
+            <div className="prose prose-lg dark:prose-invert max-w-none mb-16 break-words">
                 <ReactMarkdown>
                     {post.content}
                 </ReactMarkdown>
