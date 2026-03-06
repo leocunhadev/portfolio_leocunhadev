@@ -23,7 +23,7 @@ const Home = () => {
                 const recentPosts = data.slice(0, 3).map((issue, index) => ({
                     id: String(issue.number),
                     title: issue.title,
-                    views: 'N/A', // GitHub issues não fornecem views diretamente
+                    views: issue.reactions?.total_count || 0, // Usa reações como contador de "views/likes"
                     gradient: gradients[index % gradients.length]
                 }));
 

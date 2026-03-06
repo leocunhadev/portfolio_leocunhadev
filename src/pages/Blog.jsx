@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Search } from 'lucide-react';
+import { Search, Heart } from 'lucide-react';
 import { fetchWithCache } from '../utils/githubApi';
 
 const Blog = () => {
@@ -30,7 +30,8 @@ const Blog = () => {
                         title: issue.title,
                         summary: issue.body ? issue.body.substring(0, 150) + '...' : 'Sem resumo disponível.',
                         slug: String(issue.number),
-                        date: new Date(issue.created_at).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' })
+                        date: new Date(issue.created_at).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' }),
+                        views: issue.reactions?.total_count || 0
                     }));
 
                     setPosts(prev => {
@@ -120,9 +121,15 @@ const Blog = () => {
                                     <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-6 flex-grow">
                                         {post.summary}
                                     </p>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-auto uppercase tracking-wide font-semibold">
-                                        {post.date}
-                                    </p>
+                                    <div className="flex items-center justify-between w-full mt-auto">
+                                        <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-semibold">
+                                            {post.date}
+                                        </p>
+                                        <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 font-semibold">
+                                            <Heart size={14} />
+                                            {post.views}
+                                        </div>
+                                    </div>
                                 </div>
                             </Link>
                         );

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Calendar, Clock, Eye, ArrowLeft, Share2, Twitter, Linkedin, Copy } from 'lucide-react';
+import { Calendar, Clock, Heart, ArrowLeft, Share2, Twitter, Linkedin, Copy } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { fetchWithCache } from '../utils/githubApi';
 
@@ -19,7 +19,7 @@ const BlogPost = () => {
                     title: issue.title,
                     publishedAt: new Date(issue.created_at).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' }),
                     readingTime: Math.ceil((issue.body?.length || 0) / 1000) + ' min de leitura',
-                    views: 'N/A', // GitHub issues API não retorna views nativamente
+                    views: issue.reactions?.total_count || 0, // Usa reações como contador de "likes"
                     author: {
                         name: issue.user.login,
                         avatar: issue.user.avatar_url,
@@ -92,6 +92,10 @@ const BlogPost = () => {
                         <span className="flex items-center gap-1.5">
                             <Clock size={14} />
                             {post.readingTime}
+                        </span>
+                        <span className="flex items-center gap-1.5">
+                            <Heart size={14} />
+                            {post.views} reações
                         </span>
                     </div>
                 </div>
