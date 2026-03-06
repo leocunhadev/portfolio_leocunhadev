@@ -4,25 +4,62 @@ const Footer = () => {
     const [spotify, setSpotify] = useState(null);
 
     useEffect(() => {
-        const fetchSpotify = async () => {
-            try {
-                const response = await fetch('https://api.lanyard.rest/v1/users/449209613871611904');
-                const data = await response.json();
+        let ws;
+        let heartbeatInterval;
 
-                if (data?.success && data?.data?.spotify) {
-                    setSpotify(data.data.spotify);
-                } else {
-                    setSpotify(null);
+        const connectWebSocket = () => {
+            ws = new WebSocket('wss://api.lanyard.rest/socket');
+
+            ws.onopen = () => {
+                // Ao abrir, envia o payload de inicialização para se inscrever no usuário
+                ws.send(JSON.stringify({
+                    op: 2,
+                    d: {
+                        subscribe_to_id: "449209613871611904"
+                    }
+                }));
+            };
+
+            ws.onmessage = (event) => {
+                const message = JSON.parse(event.data);
+
+                // Lidar com o heartbeat (Hello payload)
+                if (message.op === 1) {
+                    const heartbeat = message.d.heartbeat_interval;
+                    heartbeatInterval = setInterval(() => {
+                        if (ws.readyState === WebSocket.OPEN) {
+                            ws.send(JSON.stringify({ op: 3 }));
+                        }
+                    }, heartbeat);
                 }
-            } catch (error) {
-                console.error("Erro ao carregar o status do Spotify via Lanyard:", error);
-                setSpotify(null);
-            }
+
+                // Lidar com dados iniciais (INIT_STATE) ou atualizações (PRESENCE_UPDATE)
+                if (message.t === 'INIT_STATE' || message.t === 'PRESENCE_UPDATE') {
+                    const spotifyData = message.d.spotify;
+                    setSpotify(spotifyData || null);
+                }
+            };
+
+            ws.onclose = () => {
+                // Tenta reconectar se a conexão for perdida (com um pequeno delay)
+                clearInterval(heartbeatInterval);
+                setTimeout(connectWebSocket, 5000);
+            };
+
+            ws.onerror = (error) => {
+                console.error("Erro no WebSocket do Lanyard:", error);
+                ws.close();
+            };
         };
 
-        fetchSpotify();
-        const interval = setInterval(fetchSpotify, 10000); // Atualiza a cada 10 segundos
-        return () => clearInterval(interval);
+        connectWebSocket();
+
+        return () => {
+            if (ws) {
+                ws.close();
+            }
+            clearInterval(heartbeatInterval);
+        };
     }, []);
 
     return (
@@ -41,7 +78,7 @@ const Footer = () => {
                 </span>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-10 text-base">
+            {/* <div className="grid grid-cols-2 sm:grid-cols-3 gap-10 text-base">
                 <div className="flex flex-col gap-5">
                     <a href="#" className="text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors">Casa</a>
                     <a href="#" className="text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors">Cerca de</a>
@@ -58,7 +95,7 @@ const Footer = () => {
                     <a href="#" className="text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors">Trechos</a>
                     <a href="#" className="text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors">Tweets</a>
                 </div>
-            </div>
+            </div> */}
         </footer>
     );
 };
