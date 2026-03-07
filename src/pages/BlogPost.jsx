@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { HiCalendarDays, HiClock, HiHeart, HiArrowLeft, HiShare, HiClipboardDocumentCheck } from 'react-icons/hi2';
 import { FaXTwitter, FaLinkedin, FaGithub } from 'react-icons/fa6';
 import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
 import { fetchWithCache } from '../utils/githubApi';
 
 const BlogPost = () => {
@@ -134,7 +135,7 @@ const BlogPost = () => {
 
             {/* Main Content */}
             <div className="prose prose-lg dark:prose-invert max-w-none mb-16 break-words">
-                <ReactMarkdown>
+                <ReactMarkdown rehypePlugins={[rehypeRaw]}>
                     {post.content}
                 </ReactMarkdown>
             </div>

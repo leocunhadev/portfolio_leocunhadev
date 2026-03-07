@@ -57,7 +57,8 @@ const Hero = () => {
                             prose-p:text-gray-600 dark:prose-p:text-gray-400
                             prose-p:leading-relaxed prose-p:my-2
                             prose-strong:text-foreground dark:prose-strong:text-background
-                            prose-img:inline">
+                            prose-h3:text-foreground dark:prose-h3:text-background
+                            prose-img:inline prose-img:shadow-none">
                             <ReactMarkdown
                                 remarkPlugins={[remarkGfm]}
                                 rehypePlugins={[rehypeRaw]}
