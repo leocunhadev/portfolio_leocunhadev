@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Heart } from 'lucide-react';
+import { HiMagnifyingGlass, HiHeart } from 'react-icons/hi2';
 import { fetchWithCache } from '../utils/githubApi';
 
 const Blog = () => {
@@ -99,7 +99,7 @@ const Blog = () => {
                     className="w-full px-4 py-2 border border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-foreground text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                     onChange={(e) => setSearchValue(e.target.value)}
                 />
-                <Search className="absolute right-3 top-2.5 text-gray-400" size={20} />
+                <HiMagnifyingGlass className="absolute right-3 top-2.5 text-gray-400" size={20} />
             </div>
 
             <div className={filteredPosts.length > 0 ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" : "flex flex-col gap-10"}>
@@ -126,7 +126,7 @@ const Blog = () => {
                                             {post.date}
                                         </p>
                                         <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 font-semibold">
-                                            <Heart size={14} />
+                                            <HiHeart size={14} />
                                             {post.views}
                                         </div>
                                     </div>

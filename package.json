@@ -1,5 +1,5 @@
 {
-  "name": "lee-robinson-layout",
+  "name": "leo-cunha-layout",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,9 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "lucide-react": "^0.454.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-icons": "^5.6.0",
     "react-markdown": "^10.1.0",
     "react-router-dom": "^7.13.1",
     "rehype-raw": "^7.0.0",

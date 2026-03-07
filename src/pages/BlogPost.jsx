@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Calendar, Clock, Heart, ArrowLeft, Share2, Twitter, Linkedin, Copy } from 'lucide-react';
+import { HiCalendarDays, HiClock, HiHeart, HiArrowLeft, HiShare, HiClipboardDocumentCheck } from 'react-icons/hi2';
+import { FaXTwitter, FaLinkedin, FaGithub } from 'react-icons/fa6';
 import ReactMarkdown from 'react-markdown';
 import { fetchWithCache } from '../utils/githubApi';
 
@@ -19,7 +20,7 @@ const BlogPost = () => {
                     title: issue.title,
                     publishedAt: new Date(issue.created_at).toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric' }),
                     readingTime: Math.ceil((issue.body?.length || 0) / 1000) + ' min de leitura',
-                    views: issue.reactions?.total_count || 0, // Usa reações como contador de "likes"
+                    views: issue.reactions?.total_count || 0,
                     author: {
                         name: issue.user.login,
                         avatar: issue.user.avatar_url,
@@ -54,6 +55,36 @@ const BlogPost = () => {
         );
     }
 
+    const getSummary = () => {
+        if (!post.content) return '';
+        // Remove markdown tags/links just to get plain text for summary, simplified
+        const plainText = post.content.replace(/[#*`_\[\]()]/g, '');
+        return plainText.substring(0, 150) + '...';
+    };
+
+    const handleShareX = () => {
+        const url = window.location.href;
+        const text = `${post.title}\n\n${getSummary()}`;
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+    };
+
+    const handleShareLinkedIn = () => {
+        const url = window.location.href;
+        const summary = getSummary();
+        window.open(`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(url)}&title=${encodeURIComponent(post.title)}&summary=${encodeURIComponent(summary)}`, '_blank');
+    };
+
+    const handleCopyArticle = async () => {
+        try {
+            const articleText = `${post.title}\n\n${window.location.href}\n\n${post.content}`;
+            await navigator.clipboard.writeText(articleText);
+            alert('Artigo copiado com sucesso!');
+        } catch (error) {
+            console.error('Erro ao copiar artigo:', error);
+            alert('Erro ao copiar o arquivo.');
+        }
+    };
+
     return (
         <article className="py-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* Back Button */}
@@ -61,7 +92,7 @@ const BlogPost = () => {
                 to="/blog"
                 className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-900 dark:hover:text-gray-100 mb-10 transition-colors group"
             >
-                <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
+                <HiArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
                 Voltar ao blog
             </Link>
 
@@ -86,15 +117,15 @@ const BlogPost = () => {
 
                     <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
                         <span className="flex items-center gap-1.5">
-                            <Calendar size={14} />
+                            <HiCalendarDays size={14} />
                             {post.publishedAt}
                         </span>
                         <span className="flex items-center gap-1.5">
-                            <Clock size={14} />
+                            <HiClock size={14} />
                             {post.readingTime}
                         </span>
                         <span className="flex items-center gap-1.5">
-                            <Heart size={14} />
+                            <HiHeart size={14} />
                             {post.views} reações
                         </span>
                     </div>
@@ -112,14 +143,26 @@ const BlogPost = () => {
             <footer className="pt-10 border-t border-gray-200 dark:border-gray-800">
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
                     <div className="flex items-center gap-4">
-                        <button className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-blue-500 transition-colors">
-                            <Twitter size={20} />
+                        <button
+                            onClick={handleShareX}
+                            title="Compartilhar no X"
+                            className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
+                        >
+                            <FaXTwitter size={18} />
                         </button>
-                        <button className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-blue-700 transition-colors">
-                            <Linkedin size={20} />
+                        <button
+                            onClick={handleShareLinkedIn}
+                            title="Compartilhar no LinkedIn"
+                            className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-blue-700 transition-colors"
+                        >
+                            <FaLinkedin size={18} />
                         </button>
-                        <button className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
-                            <Copy size={20} />
+                        <button
+                            onClick={handleCopyArticle}
+                            title="Copiar artigo"
+                            className="p-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+                        >
+                            <HiClipboardDocumentCheck size={18} />
                         </button>
                     </div>
 
@@ -127,9 +170,9 @@ const BlogPost = () => {
                         href={post.html_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm font-medium text-blue-500 hover:underline inline-flex items-center gap-1"
+                        className="text-sm font-medium text-blue-500 hover:underline inline-flex items-center gap-1.5"
                     >
-                        Ver issue no GitHub <Share2 size={14} />
+                        <FaGithub size={16} /> Ver issue no GitHub <HiShare size={14} />
                     </a>
                 </div>
             </footer>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Moon, Sun, Menu, X } from 'lucide-react';
+import { HiMoon, HiSun, HiBars3, HiXMark } from 'react-icons/hi2';
 import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = ({ isMenuOpen, toggleMenu, toggleDarkMode, darkMode }) => {
@@ -23,7 +23,7 @@ const Navbar = ({ isMenuOpen, toggleMenu, toggleDarkMode, darkMode }) => {
                     onClick={toggleMenu}
                     className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 md:hidden hover:ring-2 ring-gray-300 transition-all z-50"
                 >
-                    {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                    {isMenuOpen ? <HiXMark size={20} /> : <HiBars3 size={20} />}
                 </button>
 
                 {/* Desktop Links */}
@@ -47,7 +47,7 @@ const Navbar = ({ isMenuOpen, toggleMenu, toggleDarkMode, darkMode }) => {
                 onClick={toggleDarkMode}
                 className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:ring-2 ring-gray-300 transition-all"
             >
-                {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+                {darkMode ? <HiSun size={20} /> : <HiMoon size={20} />}
             </button>
 
             {/* Mobile Menu Overlay */}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play, ArrowRight } from 'lucide-react';
+import { HiPlay, HiArrowRight } from 'react-icons/hi2';
 
 const Learning = ({ courseVideos }) => {
     return (
@@ -18,14 +18,14 @@ const Learning = ({ courseVideos }) => {
                         <div className="flex items-center gap-4">
                             <span className="text-sm text-gray-500 font-medium">{video.duration}</span>
                             <div className="w-6 h-6 rounded-full border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center group-hover:bg-blue-500 group-hover:border-blue-500 transition-all">
-                                <Play size={10} className="text-gray-500 dark:text-gray-400 group-hover:text-white fill-current ml-0.5" />
+                                <HiPlay size={12} className="text-gray-500 dark:text-gray-400 group-hover:text-white fill-current ml-0.5" />
                             </div>
                         </div>
                     </div>
                 ))}
             </div>
             <a href="#" className="inline-flex items-center gap-2 mt-10 text-base text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 font-medium">
-                Assistir todos os vídeos <ArrowRight size={16} />
+                Assistir todos os vídeos <HiArrowRight size={18} />
             </a>
         </section>
     );

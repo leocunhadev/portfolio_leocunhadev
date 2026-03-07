@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Heart } from 'lucide-react';
+import { HiArrowRight, HiHeart } from 'react-icons/hi2';
 import { Link } from 'react-router-dom';
 
 const FeaturedPosts = ({ featuredPosts }) => {
@@ -16,7 +16,7 @@ const FeaturedPosts = ({ featuredPosts }) => {
                         <div className="bg-background dark:bg-foreground p-6 rounded-[14px] h-full flex flex-col justify-between items-start border border-gray-200 dark:border-gray-800">
                             <h3 className="text-lg font-bold leading-snug mb-6 group-hover:underline text-foreground dark:text-background">{post.title}</h3>
                             <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mt-auto uppercase tracking-wide font-semibold">
-                                <Heart size={14} />
+                                <HiHeart size={14} />
                                 {post.views}
                             </div>
                         </div>
@@ -24,12 +24,10 @@ const FeaturedPosts = ({ featuredPosts }) => {
                 ))}
             </div>
             <Link to="/blog" className="inline-flex items-center gap-2 mt-10 text-base text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 font-medium">
-                Leia todas as postagens <ArrowRight size={16} />
+                Leia todas as postagens <HiArrowRight size={18} />
             </Link>
         </section>
     );
 };
-
-// EyeIcon removido em favor do Heart da lucide-react
 
 export default FeaturedPosts;
