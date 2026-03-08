@@ -65,11 +65,11 @@ const App = () => {
 
                     <Routes>
                         <Route path="/" element={<Home />} />
-                        <Route path="/guestbook" element={<Guestbook />} />
-                        <Route path="/dashboard" element={<Dashboard />} />
+                        {/* <Route path="/guestbook" element={<Guestbook />} /> */}
+                        {/* <Route path="/dashboard" element={<Dashboard />} /> */}
                         <Route path="/blog" element={<Blog />} />
                         <Route path="/blog/:slug" element={<BlogPost />} />
-                        <Route path="/snippets" element={<Snippets />} />
+                        {/* <Route path="/snippets" element={<Snippets />} /> */}
                     </Routes>
 
                     <Footer />

@@ -7,10 +7,10 @@ const Navbar = ({ isMenuOpen, toggleMenu, toggleDarkMode, darkMode }) => {
 
     const navLinks = [
         { name: 'Home', path: '/' },
-        { name: 'Livro de visitas', path: '/guestbook' },
-        { name: 'Painel', path: '/dashboard' },
+        // { name: 'Livro de visitas', path: '/guestbook' },
+        // { name: 'Painel', path: '/dashboard' },
         { name: 'Blog', path: '/blog' },
-        { name: 'Trechos', path: '/snippets' }
+        // { name: 'Trechos', path: '/snippets' }
     ];
 
     const isActive = (path) => location.pathname === path;
